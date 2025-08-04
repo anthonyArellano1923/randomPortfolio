@@ -6,7 +6,8 @@ import { fileURLToPath } from 'url';
 //Plugins
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import Dotenv from 'dotenv-webpack' 
+import Dotenv from 'dotenv-webpack';
+import { BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +20,7 @@ export default { //En clase, esta linea es 'module.export =', pero como estoy tr
     filename: "[name][contenthash].js",
   },
   mode: "development",
-  watch: true,
+  devtool: "source-map",
   resolve: {
     extensions: ['.js'],
     alias: {
@@ -68,6 +69,15 @@ export default { //En clase, esta linea es 'module.export =', pero como estoy tr
     new MiniCssExtractPlugin({
       filename: "assets/[name].[contenthash].css"
     }),
-    new Dotenv()
-    ]
+    new Dotenv(),
+    new BundleAnalyzerPlugin()
+    ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist')
+      },
+    compress: true,
+    historyApiFallback: true,
+    port: 3006
+}
 }
